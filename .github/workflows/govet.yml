@@ -37,5 +37,5 @@ jobs:
         run: |
           curl -X POST \
               -H "Authorization: token ${GITHUB_TOKEN}" \
-              -d "{\"body\": \"$(cat result)\"}" \
+              -d "{\"body\": \"```\\n$(cat result)\\n```\"}" \
               ${URL}
