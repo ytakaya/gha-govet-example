@@ -26,14 +26,13 @@ jobs:
         run : GOBIN=$(pwd) GOPRIVATE="github.com/ytakaya/vettool-example" go install github.com/ytakaya/vettool-example@latest
         
       - name: run vet
-        run: go vet -vettool=$(pwd)/vettool-example | tee result
+        run: go vet -vettool=$(pwd)/vettool-example 2>&1 | tee result
             
       - name: Comment
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           URL: ${{ github.event.pull_request.comments_url }}
         run: |
-          cat result
           curl -X POST \
               -H "Authorization: token ${GITHUB_TOKEN}" \
               -d "{\"body\": \"$(cat result)\"}" \
