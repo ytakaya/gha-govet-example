@@ -23,7 +23,7 @@ jobs:
           go-version: 1.17
         
       - name: install vettool
-        run : GOPRIVATE="github.com/ytakaya,direct" go install github.com/ytalaya/vettool-example@latest
+        run : GOPRIVATE="github.com/ytakaya/vettool-example" go install github.com/ytalaya/vettool-example@latest
         
       - name: run vet
         run: go vet -vettool=myvet >> result
