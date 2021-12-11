@@ -12,13 +12,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-      - name: Comment
-        uses: actions/github-script@v5
+      - name: Configure git for private modules
+        env:
+          TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: git config --global url."https://ytakaya:${TOKEN}@github.com".insteadOf "https://github.com"
+        
+      - name: Set up Go
+        uses: actions/setup-go@v2
         with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'test'
-            })
+          go-version: 1.17
+        
+      - name: install vettool
+        run : GOBIN=$(pwd) GOPRIVATE="github.com/ytakaya/vettool-example" go install github.com/ytakaya/vettool-example@latest
+        
+      - name: run vet
+        run: |
+          go vet -vettool=$(pwd)/vettool-example 2>&1 | tee result
+          sed -i -z 's/\n/\\n/g' result
+            
+      - name: Comment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          URL: ${{ github.event.pull_request.comments_url }}
+        run: |
+          curl -X POST \
+              -H "Authorization: token ${GITHUB_TOKEN}" \
+              -d "{\"body\": \"```\\n$(cat result)\\n```\"}" \
+              ${URL}
