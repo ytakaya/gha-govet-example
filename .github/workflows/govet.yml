@@ -26,7 +26,7 @@ jobs:
         run : GOBIN=$(pwd) GOPRIVATE="github.com/ytakaya/vettool-example" go install github.com/ytakaya/vettool-example@latest
         
       - name: run vet
-        run: go vet -vettool=$(pwd)/vettool-example >> result
+        run: go vet -vettool=$(pwd)/vettool-example | tee result
             
       - name: Comment
         env:
