@@ -15,7 +15,7 @@ jobs:
       - name: Configure git for private modules
         env:
           TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        run: git config --global url."https://${TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com"
+        run: git config --global url."https://ytakaya:${TOKEN}@github.com".insteadOf "https://github.com"
         
       - name: Set up Go
         uses: actions/setup-go@v2
@@ -23,7 +23,7 @@ jobs:
           go-version: 1.17
         
       - name: install vettool
-        run : GOPRIVATE="github.com/ytakaya/vettool-example" go install github.com/ytalaya/vettool-example@latest
+        run : GOPRIVATE="github.com/ytakaya/vettool-example" go install github.com/ytakaya/vettool-example@latest
         
       - name: run vet
         run: go vet -vettool=myvet >> result
