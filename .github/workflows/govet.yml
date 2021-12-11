@@ -15,7 +15,7 @@ jobs:
       - name: Configure git for private modules
         env:
           TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        run: git config --global url."https://ytakaya:${TOKEN}@github.com".insteadOf "https://github.com"
+        run: git config --global url."https://${TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com"
         
       - name: Set up Go
         uses: actions/setup-go@v2
